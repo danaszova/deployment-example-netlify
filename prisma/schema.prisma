@@ -9,26 +9,26 @@ datasource db {
 }
 
 model Post {
-  id        Int      @default(autoincrement()) @id
-  createdAt DateTime @default(now())
-  title     String
+  authorId  Int
   content   String?
+  createdAt DateTime @default(now())
+  id        Int      @default(autoincrement()) @id
   published Boolean  @default(false)
-  author    User     @relation(fields: [authorId], references: [id]) // renamed from `User` -> `author`
-  authorId  Int // relation scalar field
+  title     String
+  User      User     @relation(fields: [authorId], references: [id])
 }
 
 model Profile {
-  id     Int     @default(autoincrement()) @id
   bio    String?
-  userId Int     @unique  // relation scalar field
-  user   User    @relation(fields: [userId], references: [id]) // renamed from `User` -> `user`
+  id     Int     @default(autoincrement()) @id
+  userId Int     @unique
+  User   User    @relation(fields: [userId], references: [id])
 }
 
 model User {
-  id      Int      @default(autoincrement()) @id
   email   String   @unique
+  id      Int      @default(autoincrement()) @id
   name    String?
-  posts   Post[] // renamed from `Post` -> `posts`
-  profile Profile? // renamed from `User` -> `profile`
+  Post    Post[]
+  Profile Profile?
 }
